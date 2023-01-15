@@ -49,7 +49,8 @@ def _find_trips_by_user(user: User):
 def get_trips_by_user(user):
     if not (logged_user := _get_logged_user()):
         raise UserNotLoggedInException()
-    elif logged_user in user.get_friends():
+    
+    if logged_user in user.get_friends():
         return _find_trips_by_user(user)
     else:
         return []
