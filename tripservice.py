@@ -27,6 +27,9 @@ class User:
     def get_friends(self) -> List["User"]:
         return self.friends
 
+    def is_friends_with(self, user: "User") -> bool:
+        return user in self.get_friends()
+
 
 def _is_user_logged_in(user: User):
     raise DependencyClassCallDuringUnitTestException(
@@ -46,11 +49,11 @@ def _find_trips_by_user(user: User):
     )
 
 
-def get_trips_by_user(user):
+def get_trips_by_user(user: User) -> List[User]:
     if not (logged_user := _get_logged_user()):
         raise UserNotLoggedInException()
 
-    if logged_user in user.get_friends():
+    if user.is_friends_with(logged_user):
         return _find_trips_by_user(user)
 
     return []
